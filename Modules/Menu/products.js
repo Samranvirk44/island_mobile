@@ -9,7 +9,7 @@ import img2 from '../../Images/img2.jpeg'
 import img3 from '../../Images/img3.jpeg'
 import { Actions } from 'react-native-router-flux';
 import url from '../URL'
-
+import hasnotch from '../Deviceinfo/hasnotch'
 
 class Signup extends Component {
 
@@ -66,15 +66,14 @@ class Signup extends Component {
   render() {
     return (
       <Container>
-        
-        <Content padder>
-      <View style={styles.sign_up_1_container}>
-      <View style={{flexDirection:'row',width:'100%'}}>
+        {
+          hasnotch?
+          <View style={{flexDirection:'row',width:'100%',marginTop:40}}>
           <TouchableWithoutFeedback onPress={()=>Actions.menu()}>
       <Icon  name='arrowleft' type='AntDesign' style={{color:'green'}}/>
       </TouchableWithoutFeedback>
 
-        <Text style={{fontSize:25,alignSelf:'center',marginLeft:50}}>Select Products </Text>
+        <Text style={{fontSize:25,alignSelf:'center',marginLeft:95,color:'green'}}>Select Products </Text>
 {/* 
 <View style={{flexDirection:'row',justifyContent:'flex-end',width:'27%'}}> 
   <Icon  name='shoppingcart' type='AntDesign'  style={{marginTop:4,color:'green'}}/>
@@ -86,6 +85,29 @@ class Signup extends Component {
   </TouchableWithoutFeedback>
           </View> */}
         </View>
+          :
+          <View style={{flexDirection:'row',width:'100%'}}>
+          <TouchableWithoutFeedback onPress={()=>Actions.menu()}>
+      <Icon  name='arrowleft' type='AntDesign' style={{color:'green'}}/>
+      </TouchableWithoutFeedback>
+
+        <Text style={{fontSize:25,alignSelf:'center',marginLeft:50,color:'green'}}>Select Products </Text>
+{/* 
+<View style={{flexDirection:'row',justifyContent:'flex-end',width:'27%'}}> 
+  <Icon  name='shoppingcart' type='AntDesign'  style={{marginTop:4,color:'green'}}/>
+  <TouchableWithoutFeedback onPress={()=>this.fun()}>
+  <View style={{borderWidth:1,marginRight:5,marginLeft:-4,borderRadius:50,height:20,width:20,alignItems:'center',backgroundColor:'yellow'}}>
+  <Text >{this.state.counter}</Text>
+  
+  </View>
+  </TouchableWithoutFeedback>
+          </View> */}
+        </View>
+        }
+       
+        <Content padder>
+      <View style={styles.sign_up_1_container}>
+      
         <View style={{ flexDirection: 'row', width: '80%',height:50,borderWidth:.5,borderRadius:50,borderColor:'grey',alignContent:'center',alignItems:'center' }}>
               <Icon name='search1' type='AntDesign' style={styles.PI_search_icons} />
               <Item style={[styles.PI_search_bar]}>

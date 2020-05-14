@@ -7,19 +7,104 @@ import styles from '../../Styles/styles'
 import { Actions } from 'react-native-router-flux';
 
 import logoimg from '../../Images/Logo_300px.png'
+import hasnotch from '../Deviceinfo/hasnotch'
 
+import ImagePicker from 'react-native-image-picker';
 import url from '../URL'
+
+const options = {
+  title: 'Select Photo',
+  //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
+const createFormData = (photo, body) => {
+  const data = new FormData();
+
+  data.append("photo", {
+      name: photo.fileName,
+      type: photo.type,
+      uri:
+          Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+  });
+
+  Object.keys(body).forEach(key => {
+      data.append(key, body[key]);
+  });
+
+  return data;
+};
+
+
 class Signup extends Component {
 
 
   state = {
     email:'',
     password:'',
-    logo:logoimg
+    logo:logoimg,
+    photo:null,
+    url_img:''
+
 
   }
   
   
+  image_upload(){
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+          console.log('User cancelled image picker');
+      } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+      } else {
+          console.log('image picked')
+          const sourcee = { uri: response.uri };
+          let size = response.fileSize / 1048576;
+          if (size <= 1) {
+              this.setState({
+                  photo: response
+              })
+             this.handleUploadPhoto();
+          }
+          else {
+              alert("Filesize greater than 1mb")
+          }
+
+      }
+  });
+    
+  }
+
+  handleUploadPhoto = async () => {
+    console.log("uplod is calling")
+    await fetch(url+ 'images/UploadImages', {
+        method: "POST",
+        body: createFormData(this.state.photo, { userId: 123 })
+    })
+        .then(response => response.json())
+        .then(response => {
+            console.log("Upload succes", response);
+
+            if (response.Successful) {
+                this.setState({ url_img:response.uri});
+                alert('uploaded')
+            }
+            else {
+                alert("Upload Failed")
+            }
+            console.log(this.state.url_img)
+        })
+        .catch(error => {
+            console.log("upload error", error);
+            alert("Upload failed!");
+        });
+};
+
+
       Update = (v, key) => {
      //   console.log('calling..',v)
         const name = /^[0-9]+$/
@@ -92,6 +177,7 @@ class Signup extends Component {
         }
  
   componentDidMount = ()=> {
+    console.log(hasnotch)
 }
 signup=()=>{
 Actions.signup()
@@ -125,12 +211,25 @@ Actions.signup()
           }
           onLogoutFinished={() => console.log("logout.")}/> */}
           
-          <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}> 
+          {
+            hasnotch?
+            <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%',marginTop:40}}> 
+     <TouchableWithoutFeedback onPress={()=>this.signup()}>
+        <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 40,color:'green'}}/>
+        </TouchableWithoutFeedback>
+<View>
+</View>
+        </View>
+            :
+            <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}> 
      <TouchableWithoutFeedback onPress={()=>this.signup()}>
         <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20,color:'green'}}/>
         </TouchableWithoutFeedback>
-<View></View>
+<View>
+</View>
         </View>
+          }
+          
           
          
         <Content padder>
@@ -141,7 +240,11 @@ Actions.signup()
         <Text>Sign in with</Text>
         <View style={{flexDirection:'row'}}> 
         <Icon  name='google-plus-square' type='FontAwesome' />
+        <TouchableWithoutFeedback onPress={() =>this.image_upload()}>
+
                 <Icon  name='facebook-square' type='AntDesign' />
+                </TouchableWithoutFeedback>
+
 </View>
 <Text style={styles.or_text}>or</Text>
 

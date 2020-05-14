@@ -9,7 +9,7 @@ import Tab1 from './category'
 import Tab2 from './offers'
 import { Actions } from 'react-native-router-flux';
 import url from '../URL'
-
+import hasnotch from '../Deviceinfo/hasnotch'
 
 
 class Signup extends Component {
@@ -52,12 +52,13 @@ fun=()=>{
   render() {
     return (
       <Container>
-        
-          <View style={{flexDirection:'row'}}>
+        {
+          hasnotch?
+          <View style={{flexDirection:'row',marginTop:40}}>
           <TouchableWithoutFeedback onPress={()=>Actions.login()}>
         <Icon  name='arrowleft' type='AntDesign' style={{color:'green'}}/>
         </TouchableWithoutFeedback>
-          <Text style={{fontSize:25,alignSelf:'center',marginLeft:130}}>Menu</Text>
+          <Text style={{fontSize:25,alignSelf:'center',marginLeft:130,color:'green'}}>Menu</Text>
   {/* {
     this.state.shop==true?
   <View style={{flexDirection:'row',justifyContent:'flex-end',width:'40%'}}> 
@@ -75,6 +76,32 @@ fun=()=>{
   
   } */}
           </View>
+          :
+          <View style={{flexDirection:'row'}}>
+          <TouchableWithoutFeedback onPress={()=>Actions.login()}>
+        <Icon  name='arrowleft' type='AntDesign' style={{color:'green'}}/>
+        </TouchableWithoutFeedback>
+          <Text style={{fontSize:25,alignSelf:'center',marginLeft:130,color:'green'}}>Menu</Text>
+  {/* {
+    this.state.shop==true?
+  <View style={{flexDirection:'row',justifyContent:'flex-end',width:'40%'}}> 
+    <Icon  name='shoppingcart' type='AntDesign'  style={{marginTop:4,color:'green'}}/>
+    <TouchableWithoutFeedback onPress={()=>this.fun()}>
+    <View style={{borderWidth:1,marginRight:5,marginLeft:-4,borderRadius:50,height:20,width:20,alignItems:'center',backgroundColor:'yellow'}}>
+    <Text >{this.state.counter}</Text>
+    
+    </View>
+    </TouchableWithoutFeedback>
+            </View>
+    :
+    <View>
+  </View>
+  
+  } */}
+          </View>
+        }
+
+          
         
        
 

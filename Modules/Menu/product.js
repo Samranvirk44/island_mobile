@@ -41,7 +41,7 @@ class Signup extends Component {
       <Icon  name='arrowleft' type='AntDesign' style={{color:'green'}}/>
       </TouchableWithoutFeedback>
 
-        <Text style={{fontSize:25,alignSelf:'center',marginLeft:30}}>Product Description </Text>
+        <Text style={{fontSize:25,alignSelf:'center',marginLeft:60,color:'green'}}>Product Description </Text>
 {/* 
 <View style={{flexDirection:'row',justifyContent:'flex-end',width:'20%'}}> 
   <Icon  name='shoppingcart' type='AntDesign'  style={{marginTop:4,color:'green'}}/>

@@ -58,7 +58,6 @@ PI_search_bar:{width:'75%',borderBottomWidth:0},
 //Product
 text_p:{fontSize:20},
 
-  
 })
 
 

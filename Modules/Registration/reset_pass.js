@@ -7,6 +7,7 @@ import styles from '../../Styles/styles'
 import { Actions } from 'react-native-router-flux';
 
 import url from '../URL'
+import hasnotch from '../Deviceinfo/hasnotch'
 
 class Signup extends Component {
 
@@ -97,12 +98,23 @@ class Signup extends Component {
     return (
       <Container>
         
-          <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}> 
+        {
+          hasnotch?
+<View style={{flexDirection:'row',justifyContent:'space-between',width:'100%',marginTop:40}}> 
           <TouchableWithoutFeedback onPress={()=>Actions.login()}>
-             <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20}}/>
+             <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20,color:'green'}}/>
              </TouchableWithoutFeedback>
      <View></View>
              </View>
+          :
+<View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}> 
+          <TouchableWithoutFeedback onPress={()=>Actions.login()}>
+             <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20,color:'green'}}/>
+             </TouchableWithoutFeedback>
+     <View></View>
+             </View>
+        }
+
         
         
         <Content padder>

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback,Image} from 'react-native';
-import { Container, Header, Content, Icon,Item,Label,Input,DatePicker, } from 'native-base';
+import { View, Text, StyleSheet, TextInput, TouchableWithoutFeedback,Image,FlatList, SafeAreaView} from 'react-native';
+import { Container, Header, Content, Icon,Item,Label,Input,DatePicker, List, } from 'native-base';
 import { SearchBar } from 'react-native-elements';
 
 
@@ -45,7 +45,6 @@ get_categories=async()=>{
   })
   .then(res => res.json())
   .then((resjson) => {
-    console.log('image.....',resjson.data[0].image)
       if(resjson.data.length!=0){
 console.log(resjson.data)
 console.log('description',resjson.data[0].description)
@@ -86,9 +85,12 @@ updateSearch = search => {
               </Item>
 
             </View>
-      {
-            this.state.categories.map((data, index) => (
-              <TouchableWithoutFeedback  onPress={()=>Actions.products({category:data})}>
+            <SafeAreaView style={{width:'100%'}}>
+            <FlatList 
+            data={this.state.categories}
+            renderItem={({item})=>(
+
+<TouchableWithoutFeedback  onPress={()=>Actions.products({category:item})}>
    <View style={{flexDirection:'column',width:'100%'}}>
                 <View  style={{height:100,flexDirection:'row',alignItems:"center"}}>
                   
@@ -100,16 +102,16 @@ updateSearch = search => {
         <Image
         style={{ width: '100%', height: '100%',resizeMode: 'contain' }}
                       source={{
-          uri: (data.image),
+          uri: (item.image),
         }}
       />
                   </View>
                   <View style={{flexDirection:'column',width:'40%',justifyContent:'space-around',height:50}}>
                   <View style={{ width: '100%',marginLeft:10 }}>
-                    <Text>{data.name}</Text>
+                    <Text>{item.name}</Text>
                   </View>
                   <View style={{ width: '100%',marginLeft:10 }}>
-                    <Text style={{color:'grey',fontSize:11}}>{data.description}</Text>
+                    <Text style={{color:'grey',fontSize:11}}>{item.description}</Text>
                   </View>
                   
                   </View>
@@ -120,7 +122,46 @@ updateSearch = search => {
                 </View>
               </TouchableWithoutFeedback>
 
-            ))
+
+
+            )}
+            />
+            </SafeAreaView>
+      {
+  //           this.state.categories.map((data, index) => (
+  //             <TouchableWithoutFeedback  onPress={()=>Actions.products({category:data})}>
+  //  <View style={{flexDirection:'column',width:'100%'}}>
+  //               <View  style={{height:100,flexDirection:'row',alignItems:"center"}}>
+                  
+  //                 <View style={{ width: '30%', height: '70%'}}>
+  //                   {/* <Image
+  //                     style={{ width: '100%', height: '100%',resizeMode: 'contain' }}
+  //                     source={require('../../Images/pizza.png')}
+  //                     /> */}
+  //       <Image
+  //       style={{ width: '100%', height: '100%',resizeMode: 'contain' }}
+  //                     source={{
+  //         uri: (data.image),
+  //       }}
+  //     />
+  //                 </View>
+  //                 <View style={{flexDirection:'column',width:'40%',justifyContent:'space-around',height:50}}>
+  //                 <View style={{ width: '100%',marginLeft:10 }}>
+  //                   <Text>{data.name}</Text>
+  //                 </View>
+  //                 <View style={{ width: '100%',marginLeft:10 }}>
+  //                   <Text style={{color:'grey',fontSize:11}}>{data.description}</Text>
+  //                 </View>
+                  
+  //                 </View>
+                  
+
+  //               </View>
+  //               <View style={{width:'100%',backgroundColor:'grey',height:1}}></View>
+  //               </View>
+  //             </TouchableWithoutFeedback>
+
+  //           ))
           }
 
          </View>

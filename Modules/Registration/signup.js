@@ -13,25 +13,20 @@ import PhoneInput from 'react-native-phone-input'
 import logoimg from '../../Images/Logo_300px.png'
 
 import url from '../URL'
+import hasnotch from '../Deviceinfo/hasnotch'
 
 
-// More info on all the options is below in the API Reference... just some common use cases shown here
+
 const options = {
   title: 'Select Photo',
   //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
   storageOptions: {
     skipBackup: true,
     path: 'images',
-    countryFlag: 'pk',
-      code: 92,
-      number: '',
-      countryFlagg: 'pk',
-      codee: 92,
-      numberr: '',
-
   },
 };
 
+// More info on all the options is below in the API Reference... just some common use cases shown here
 const createFormData = (photo, body) => {
   const data = new FormData();
 
@@ -41,7 +36,13 @@ const createFormData = (photo, body) => {
       uri:
           Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
   });
-}
+
+  Object.keys(body).forEach(key => {
+      data.append(key, body[key]);
+  });
+
+  return data;
+};
 
 class Signup extends Component {
 
@@ -57,16 +58,14 @@ class Signup extends Component {
     zip:'',
     dob:'',
     avatarSource:'',
-    photo:'',
-    logo:logoimg
+    logo:logoimg,
+    number:'',
 
+    photo:null,
 
   }
   
-  
-  onChangeText = ({dialCode, unmaskedPhoneNumber, phoneNumber, isVerified}) => {
-    console.log(dialCode, unmaskedPhoneNumber, phoneNumber, isVerified);
-  };
+ 
 
   image_upload(){
     ImagePicker.showImagePicker(options, (response) => {
@@ -94,7 +93,6 @@ class Signup extends Component {
   });
     
   }
-
   handleUploadPhoto = async () => {
     console.log("uplod is calling")
     await fetch(url+ 'images/UploadImages', {
@@ -110,13 +108,13 @@ class Signup extends Component {
                 alert('uploaded')
             }
             else {
-                alert("Upload Failed")
+                alert("Upload Failed res")
             }
             console.log(this.state.url_img)
         })
         .catch(error => {
             console.log("upload error", error);
-            alert("Upload failed!");
+            alert("Upload failed catch!");
         });
 };
 
@@ -198,7 +196,7 @@ class Signup extends Component {
       console.log('data..............',data)
 
 
-      if(this.state.email==''||this.state.firsrname==''||this.state.lastname==''||this.state.mobilenumber==''||this.state.dob=='',this.state.zip==''){
+      if(this.state.email==''||this.state.firsrname==''||this.state.lastname==''||this.state.dob=='',this.state.zip==''){
         alert('fill the form carefully')
       }else{
         if(this.state.password==this.state.confirmpass){
@@ -236,6 +234,7 @@ class Signup extends Component {
         }
  
   componentDidMount = ()=> {
+    
 }
 phone=(code,flag)=>{
 console.log('code',code)
@@ -246,8 +245,16 @@ console.log('flag',code)
     return (
       <Container>
                <StatusBar backgroundColor="green" hidden = {false} barStyle="dark-content" />    
-
-       
+{
+  hasnotch?
+  <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%',marginTop:40}}> 
+         <TouchableWithoutFeedback onPress={()=>Actions.login()}>
+        <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20,color:'green'}}/>
+        </TouchableWithoutFeedback>
+        <Text style={styles.headingText}>Create Account</Text>
+<View></View>
+        </View>
+  :
 <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}> 
          <TouchableWithoutFeedback onPress={()=>Actions.login()}>
         <Icon  name='arrowleft' type='AntDesign' style={{marginBottom: 20,color:'green'}}/>
@@ -255,6 +262,8 @@ console.log('flag',code)
         <Text style={styles.headingText}>Create Account</Text>
 <View></View>
         </View>
+}
+       
        
          
         <Content padder>
